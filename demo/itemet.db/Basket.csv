@@ -1,0 +1,3 @@
+base.code,base.end,base.need,base.start,base.state,base.status,base.type,custom.markdown
+Huge delivery,2020-12-26T00:00,"['Many apples', 'Many bananas']",2020-12-24T00:00,request,10.0,Basket,
+Small delivery,2019-12-26T00:00,"['Few apples', 'Few bananas']",2019-12-24T00:00,done,100.0,Basket,

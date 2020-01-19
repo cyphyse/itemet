@@ -1,0 +1,33 @@
+{
+    "Apple": {
+        "state": {
+            "good": "green",
+            "bad": "red",
+            "perfect": "green"
+        },
+        "need": {},
+        "custom": {
+            "weight": 0
+        }
+    },
+    "Banana": {
+        "state": {
+            "good": "green",
+            "bad": "red"
+        },
+        "need": {},
+        "custom": {
+            "count": 0
+        }
+    },
+    "Basket": {
+        "state": {
+            "done": "green",
+            "request": "orange"
+        },
+        "need": {
+            "Apple": "true",
+            "Banana": "true"
+        }
+    }
+}

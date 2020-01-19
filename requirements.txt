@@ -1,0 +1,5 @@
+flask-appbuilder
+Flask-AutoIndex
+markdown
+pathvalidate
+csvdoc@git+https://github.com/cyphyse/csvdoc#egg=csvdoc

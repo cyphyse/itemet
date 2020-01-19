@@ -1,0 +1,8 @@
+/env/*
+/data/*
+/demo/select/*
+/demo/appstatus.html
+
+flask.db
+
+*.pyc

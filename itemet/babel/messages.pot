@@ -1,0 +1,126 @@
+# Translations template for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-12-22 21:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: app/extension/form.py:23
+msgid "Select Value"
+msgstr ""
+
+#: app/models/forms/edit_custom_data.py:21
+msgid "Select Item"
+msgstr ""
+
+#: app/models/forms/edit_custom_data.py:30
+msgid "Item"
+msgstr ""
+
+#: app/models/forms/edit_custom_data.py:37
+msgid "Type data"
+msgstr ""
+
+#: app/models/forms/edit_custom_data.py:43
+msgid "Item data"
+msgstr ""
+
+#: app/page/tabs.py:19
+msgid "Import"
+msgstr ""
+
+#: app/page/tabs.py:28
+msgid "Export"
+msgstr ""
+
+#: app/page/model_views/data_views/item_type_view.py:21 app/page/tabs.py:43
+msgid "States"
+msgstr ""
+
+#: app/page/tabs.py:52
+msgid "Types"
+msgstr ""
+
+#: app/page/tabs.py:62
+msgid "Items"
+msgstr ""
+
+#: app/page/model_views/data_views/item_state_view.py:17
+#: app/page/model_views/data_views/item_type_view.py:18
+msgid "Code"
+msgstr ""
+
+#: app/page/model_views/data_views/item_state_view.py:18
+msgid "Color"
+msgstr ""
+
+#: app/page/model_views/data_views/item_type_view.py:19
+msgid "Yaml Format"
+msgstr ""
+
+#: app/page/model_views/data_views/item_type_view.py:20
+msgid "Needs"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:34
+msgid "Item Type"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:35
+msgid "Defines needs, states and yaml format"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:42
+msgid "Item Needs"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:43
+msgid "Needs related to type"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:52
+msgid "Item State"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:53
+msgid "State related to type"
+msgstr ""
+
+#: app/page/model_views/data_views/item_view.py:117
+msgid "Edit custom data"
+msgstr ""
+
+#: app/page/model_views/form_views/edit_custom_data_view.py:26
+msgid "Saved!"
+msgstr ""
+
+#: app/page/model_views/form_views/edit_custom_data_view.py:27
+msgid "Invalid!"
+msgstr ""
+
+#: app/templates/404.html:4
+msgid "Page not found"
+msgstr ""
+
+#: app/templates/itemet_index.html:5
+msgid "Welcome to Itemet"
+msgstr ""
+
+#: app/templates/itemet_index.html:6
+msgid ""
+"... a flexible database to create linked markdown documents with yaml "
+"frontmatter."
+msgstr ""
+
