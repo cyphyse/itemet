@@ -18,6 +18,18 @@ if 'ITEMET_CONFIG' in os.environ:
     logger.info("Load config from: " + os.environ.get('ITEMET_CONFIG'))
     app.config.from_envvar('ITEMET_CONFIG')
 
+# Create directories
+paths = [
+    app.config['ITEMET']['path']['selected']['input'],
+    app.config['ITEMET']['path']['csvdoc']['export']['items'],
+    app.config['ITEMET']['path']['csvdoc']['export']['net_config'],
+]
+dbs = app.config['SQLALCHEMY_DATABASE_URI']
+if "sqlite" in dbs:
+    paths.append(dbs.replace("sqlite:///", ""))
+for p in paths:
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+
 
 # Initialize dependencies
 class MainIndexView(IndexView):
