@@ -6,6 +6,7 @@ from .... extension.form_extensions import (
     SelectMany2SlaveAJAXWidget
 )
 from .... models.data.item import Item
+from .... interface.filesystem import orm
 # external
 from pathvalidate import validate_filename
 from flask import redirect
@@ -19,6 +20,8 @@ from flask_appbuilder.fieldwidgets import (
     Select2SlaveAJAXWidget
 )
 from sqlalchemy.orm.session import make_transient
+
+
 
 
 def validate_this_filename(form, field):
@@ -119,10 +122,6 @@ class ItemMasterView(ModelView):
     label_columns = \
         get_label()
 
-    @action("customeditaction", _("Edit custom data"), confirmation="Change entry?", icon="fa-pencil", single=True, multiple=False)
-    def customeditaction(self, item):
-        return redirect("/apiendpoints/editcustomdata/" + str(item.id))
-
 
     @action("duplicate", "Duplicate", confirmation="Duplicate entry?", icon="fa-copy", single=True, multiple=False)
     def duplicate(self, item):
@@ -136,3 +135,16 @@ class ItemMasterView(ModelView):
         db.session.commit()
         db.session.refresh(item)
         return redirect("/itemmasterview/edit/" + str(item.id))
+
+    @action("customeditaction", _("Edit custom data"), confirmation="Change entry?", icon="fa-pencil", single=True, multiple=False)
+    def customeditaction(self, item):
+        return redirect("/apiendpoints/editcustomdata/" + str(item.id))
+
+    @action("fileupload", _("Upload File"), confirmation="Upload a new file?", icon="fa-upload", single=True, multiple=False)
+    def fileupload(self, item):
+        return redirect("/apiendpoints/fileupload/" + str(item.id))
+
+    @action("filebrowse", _("Browse Files"), confirmation="Browse files", icon="fa-window-maximize", single=True, multiple=False)
+    def filebrowse(self, item):
+        # TODO get rigth path
+        return redirect("/files/db/itemet.db/asset/" + str(item.code))

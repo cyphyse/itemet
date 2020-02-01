@@ -27,7 +27,6 @@ class ItemCustomEditView(SimplePkFormView):
     message_warn = _("Invalid!")
 
     def form_get(self, form):
-        global action_item
         i = db.session.query(Item).filter_by(id=int(form.pk)).first()
         if i is None:
             logger.error("No item was found!")

@@ -73,6 +73,18 @@ class ApiEndpoints(BaseView):
         else:
             return redirect("/itemcustomeditview/form/" + str(res[0].id))
 
+    @expose('/fileupload/<string:item_id>')
+    @has_access
+    def fileupload(self, item_id):
+        """Redirects to edit form"""
+        res = db.session.query(Item).filter_by(id=item_id).all()
+        if res is None or len(res) < 1:
+            return redirect('/')
+        elif len(res) > 1:
+            raise "Found too many matches"
+        else:
+            return redirect("/fileuploadform/form/" + str(res[0].id))
+
     @expose('/importdata/<string:path>')
     @has_access
     def importdata(self, path):
