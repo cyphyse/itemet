@@ -23,13 +23,13 @@ class Filesystem(object):
         self.asset = kwargs.get("asset")
         self.trash = kwargs.get("trash")
 
-    def get_asset_path(self, name):
+    def get_asset_path(self, name, *other):
         """Returns asset path"""
-        return os.path.join(self.asset, name)
+        return os.path.join(self.asset, name, *other)
 
-    def get_trash_path(self, name):
+    def get_trash_path(self, name, *other):
         """Returns trash path"""
-        return os.path.join(self.trash, name)
+        return os.path.join(self.trash, name, *other)
 
     def hardmove(self, src, dst):
         if src == dst:

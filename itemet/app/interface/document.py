@@ -9,6 +9,7 @@ import json
 
 transform = DocumentTransform()
 
+
 class Document(object):
     """
     This class provides functions to create

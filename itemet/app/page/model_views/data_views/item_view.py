@@ -140,11 +140,6 @@ class ItemMasterView(ModelView):
     def customeditaction(self, item):
         return redirect("/apiendpoints/editcustomdata/" + str(item.id))
 
-    @action("fileupload", _("Upload File"), confirmation="Upload a new file?", icon="fa-upload", single=True, multiple=False)
-    def fileupload(self, item):
-        return redirect("/apiendpoints/fileupload/" + str(item.id))
-
-    @action("filebrowse", _("Browse Files"), confirmation="Browse files", icon="fa-window-maximize", single=True, multiple=False)
-    def filebrowse(self, item):
-        # TODO get rigth path
-        return redirect("/files/db/itemet.db/asset/" + str(item.code))
+    @action("filemanager", _("Manage Files"), confirmation="Open file manager?", icon="fa-file", single=True, multiple=False)
+    def filemanager(self, item):
+        return redirect("/apiendpoints/filemanager/" + str(item.id))
