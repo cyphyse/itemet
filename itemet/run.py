@@ -14,6 +14,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 serve_path = os.path.abspath(
     app.config['ITEMET'].get("path").get("flask").get("serve")
 )
+app.config['ITEMET']['path']['flask']['fullserve'] = serve_path
 
 files_index = AutoIndex(app, browse_root=serve_path, add_url_rules=False)
 

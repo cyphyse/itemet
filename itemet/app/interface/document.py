@@ -1,5 +1,6 @@
 # -*- coding: <utf-8>
 # internal
+from . filesystem import orm
 from .. import app, db
 from .. models.data.item import Item
 from csvdoc.document_transform import DocumentTransform
@@ -35,12 +36,20 @@ class Document(object):
             "custom": item_custom,
             "markdown": item_custom_md
         }
-        filedir = app.config['ITEMET'].get("path").get("selected").get("input")
-        filepath = os.path.join(filedir, item_code + ".json")
+
+        def get_cleaned_path(item_code, ext):
+            filepath = orm.fs.get_asset_path(item_code, item_code + ext)
+            try:
+                os.remove(filepath)
+            except Exception as err:
+                pass
+            return filepath
+
+        filepath = get_cleaned_path(item_code, ".json")
         with open(filepath, 'w', encoding='utf-8') as fp:
             json.dump(final_dict, fp, indent=2, ensure_ascii=False)
         json_filepath = filepath
-        filepath = os.path.join(filedir, item_code + ".md")
+        filepath = get_cleaned_path(item_code, ".md")
         final_doc = transform.to_doc(final_dict)
         with open(filepath, 'w', encoding='utf-8') as fp:
             fp.write(final_doc)

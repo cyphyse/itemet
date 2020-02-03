@@ -180,24 +180,7 @@ class PandasPort(object):
         plugintrigger.on_event(base_path)
 
     def set_selected(self, item_code):
-        input_file_dir = app.config['ITEMET'].get("path").get("selected").get("input")
-        output_file_dir = app.config['ITEMET'].get("path").get("selected").get("output")
-        os.makedirs(os.path.dirname(output_file_dir), exist_ok=True)
-        oldfiles = []
-        oldfiles += glob.glob(os.path.join(input_file_dir, "*"))
-        oldfiles += glob.glob(os.path.join(output_file_dir, "*"))
-        logger.info("### Remove old files: " + str(oldfiles))
-        for filename in oldfiles:
-            fn = os.path.abspath(filename)
-            if os.path.isfile(fn) and "/." not in fn:
-                try:
-                    os.remove(fn)
-                except:
-                    pass
         doc = Document()
         files = doc.make(item_code)
-        filepath = os.path.join(input_file_dir, "SELECTED")
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(item_code)
         plugintrigger.on_event(files[0])
         plugintrigger.on_event(files[1])

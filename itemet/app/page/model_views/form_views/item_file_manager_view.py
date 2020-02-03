@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from .... import db
+from .... import app, db
 from .... extension.form_extensions import SimplePkFormView
 from .... interface.filesystem import orm
 from .... models.forms.item_file_manager import ItemFileManager
@@ -26,10 +26,13 @@ class ItemFileManagerView(SimplePkFormView):
 
         form.file_links.choices = []
         for item_file in item_files:
+            servepath = app.config['ITEMET']['path']['flask']['fullserve']
+            filelink = item_file.replace(servepath, "/files")
             filename = os.path.basename(item_file)
-            # TODO get correct path
-            a = "<a href=\"/files/db/itemet.db/asset/" + form.code.data + "/" + filename + "\"" \
-                + " title=\"" + item_file + "\">" + filename + "</a>"
+            a = "<a"
+            a += " href=\"" + filelink + "\""
+            a += " title=\"" + item_file + "\""
+            a += ">" + filename + "</a>"
             form.file_links.choices.append((filename, a))
 
         form.files_to_delete.choices = [("-", "-")]
@@ -73,5 +76,6 @@ class ItemFileManagerView(SimplePkFormView):
                 save(form.code.data, file)
         else:
             save(form.code.data, files_to_upload)
-
+        if len(txt) < 3:
+            txt = "   None"
         flash("Operations: " + txt[3:], 'info')
