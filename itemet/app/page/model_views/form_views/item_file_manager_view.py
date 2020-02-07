@@ -26,7 +26,7 @@ class ItemFileManagerView(SimplePkFormView):
 
         form.file_links.choices = []
         for item_file in item_files:
-            servepath = app.config['ITEMET']['path']['flask']['fullserve']
+            servepath = app.config['ITEMET']['path']['fullserve']
             filelink = item_file.replace(servepath, "/files")
             filename = os.path.basename(item_file)
             a = "<a"

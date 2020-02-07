@@ -64,7 +64,7 @@ class PandasPort(object):
 
     def add_net_config_to_db(self):
         # load dict
-        filepath = app.config['ITEMET'].get("path").get("csvdoc").get("import").get("net_config")
+        filepath = app.config['ITEMET'].get("path").get("itemet net_config")
         with open(filepath) as net_cfg_file:
             net_cfg = json.load(net_cfg_file)
         # process data
@@ -117,7 +117,7 @@ class PandasPort(object):
                 for doc in yaml.load_all(type.custom_template):
                     if isinstance(doc, dict):
                         net_config[type.type_code].update({"custom": doc})
-        filepath = app.config['ITEMET'].get("path").get("csvdoc").get("export").get("net_config")
+        filepath = app.config['ITEMET'].get("path").get("itemet net_config")
 
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
@@ -139,7 +139,7 @@ class PandasPort(object):
     def import_table(self):
         self.clear_db()
         self.add_net_config_to_db()
-        filepattern = app.config['ITEMET'].get("path").get("csvdoc").get("import").get("items")
+        filepattern = app.config['ITEMET'].get("path").get("itemet items")
         files = glob.glob(filepattern + "/*.csv")
         self.csv_db = TableCollection(files=files)
         self.csv_db.load()
@@ -150,7 +150,7 @@ class PandasPort(object):
 
     def export_table(self):
         items = db.session.query(Item).all()
-        base_path = app.config['ITEMET'].get("path").get("csvdoc").get("export").get("items")
+        base_path = app.config['ITEMET'].get("path").get("itemet items")
         os.makedirs(base_path, exist_ok=True)
         # collect items for each type TODO: improve this by useing db functions
         data_model = {}  # create one file for each type

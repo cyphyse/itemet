@@ -15,41 +15,32 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 ITEMET = {
     "format": {
         "datetime": {
-            "itemet.db": "%Y-%m-%dT%H:%M",
+            "itemet.db": "%Y-%m-%dT%H:%M",  # ISO 8601 only!
             "doc": "%Y-%m-%d %H:%M"
         }
     },
     "path": {
-        "flask": {
-            "serve": "../demo"
-        },
-        "plugin": {
-            "pattern": "../demo/apps/*/app.py",
-            "out": "../demo"
-        },
-        "csvdoc": {
-            "import": {
-                "net_config": "../demo/itemet.db/net_config.json",
-                "items": "../demo/itemet.db"
-            },
-            "export": {
-                "net_config": "../demo/itemet.db/net_config.json",
-                "items": "../demo/itemet.db"
-            }
-        },
-        "selected": {
-            "input": "../demo/select/",
-            "output": "../demo/select/"
-        }
+        "flask db": "../demo",
+        "itemet db": "../demo",
+        "itemet apps": "../demo/apps/*/app.py"
     }
 }
 
+def make_abs(path_dict):
+    for key, path in path_dict.items():
+        if isinstance(path, dict):
+            path_dict[key] = make_abs(path)
+        else:
+            path_dict[key] = os.path.abspath(os.path.join(basedir, path))
+    return path_dict
+
+ITEMET["path"] = make_abs(ITEMET["path"])
+
 # The SQLAlchemy connection string
-SQLALCHEMY_DATABASE_URI = "sqlite:///" + \
-    os.path.abspath(os.path.join(basedir, "..", "demo", "flask.db"))
+fdir = ITEMET["path"]["flask db"]
+SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(fdir, "flask.db")
 # SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
-
 
 # Your App secret key
 SECRET_KEY = "secreterkey"
@@ -113,7 +104,7 @@ LANGUAGES = {
     #    "de": {"flag": "de", "name": "German"},
     #    "zh": {"flag": "cn", "name": "Chinese"},
     #    "ru": {"flag": "ru", "name": "Russian"},
-    #   "pl": {"flag": "pl", "name": "Polish"},
+    #    "pl": {"flag": "pl", "name": "Polish"},
 }
 # ---------------------------------------------------
 # Image and file configuration

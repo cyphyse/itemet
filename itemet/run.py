@@ -4,7 +4,7 @@ from app.interface.filesystem import orm
 from flask_autoindex import AutoIndex
 
 
-p = app.config['ITEMET'].get("path").get("csvdoc").get("export").get("items")
+p = app.config['ITEMET'].get("path").get("itemet items")
 asset = os.path.join(p, "asset")
 trash = os.path.join(p, "trash")
 orm.init_paths(asset=asset, trash=trash)
@@ -12,9 +12,9 @@ orm.init_paths(asset=asset, trash=trash)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 serve_path = os.path.abspath(
-    app.config['ITEMET'].get("path").get("flask").get("serve")
+    app.config['ITEMET'].get("path").get("itemet db")
 )
-app.config['ITEMET']['path']['flask']['fullserve'] = serve_path
+app.config['ITEMET']['path']['fullserve'] = serve_path
 
 files_index = AutoIndex(app, browse_root=serve_path, add_url_rules=False)
 

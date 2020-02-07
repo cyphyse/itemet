@@ -18,11 +18,19 @@ if 'ITEMET_CONFIG' in os.environ:
     logger.info("Load config from: " + os.environ.get('ITEMET_CONFIG'))
     app.config.from_envvar('ITEMET_CONFIG')
 
+# Add default paths
+app.config['ITEMET']['path'].update({
+    "itemet items": os.path.join(app.config['ITEMET']['path']["itemet db"], "itemet.db")
+})
+app.config['ITEMET']['path'].update({
+    "itemet net_config": os.path.join(app.config['ITEMET']['path']["itemet items"], "net_config.json")
+})
+
 # Create directories
 paths = [
-    app.config['ITEMET']['path']['selected']['input'],
-    app.config['ITEMET']['path']['csvdoc']['export']['items'],
-    app.config['ITEMET']['path']['csvdoc']['export']['net_config'],
+    app.config['ITEMET']['path']['itemet db'],
+    app.config['ITEMET']['path']['itemet items'],
+    app.config['ITEMET']['path']['itemet net_config'],
 ]
 dbs = app.config['SQLALCHEMY_DATABASE_URI']
 if "sqlite" in dbs:
@@ -47,8 +55,8 @@ from app.interface.trigger import plugintrigger
 cfg = app.config
 icfg = app.config['ITEMET']
 plugintrigger.init(
-    icfg["path"]["plugin"]["pattern"],
-    icfg["path"]["plugin"]["out"]
+    icfg["path"]["itemet apps"],
+    icfg["path"]["itemet db"]
 )
 
 # Load page
