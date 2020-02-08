@@ -35,7 +35,10 @@ class Format(object):
         """
         Returns a markdown document in html.
         """
-        return Markup(markdown.markdown(doc))
+        tmp = doc.replace("\r\n", "\n")
+        tmp = "\n" + tmp + "\n"
+        tmp = tmp.replace("\n---\n", "\n```\n")
+        return Markup(markdown.markdown(tmp))
 
     def code(self, code):
         """
