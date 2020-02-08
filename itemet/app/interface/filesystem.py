@@ -32,6 +32,10 @@ class Filesystem(object):
         return os.path.join(self.trash, name, *other)
 
     def hardmove(self, src, dst):
+        """
+        Moves a directory.
+        WARNING: Deletes target directory if it exists before.
+        """
         if src == dst:
             return
         if not os.path.exists(src):
@@ -47,31 +51,34 @@ class Filesystem(object):
         if not os.path.exists(dst):
             os.makedirs(dst)
 
-    def move(self, src_name, dst_name):
+    def rename(self, src_name, dst_name):
+        """Renames a asset directory."""
         src = self.get_asset_path(src_name)
         dst = self.get_asset_path(dst_name)
         self.hardmove(src, dst)
 
     def delete(self, name):
-        """Moves directory to trash."""
+        """Moves asset directory to trash."""
         src = self.get_asset_path(name)
         dst = self.get_trash_path(name)
         self.hardmove(src, dst)
 
     def clean(self):
+        """Removes all data. WARNING: Only for testing."""
         shutil.rmtree(self.asset)
         shutil.rmtree(self.trash)
 
 
-class ORMFilesystemEvents(object):
+class OrmFileSystemExtension(object):
     """
-    Interface to filesystem.
+    Handler for ORM events.
     """
 
     def __init__(self, **kwargs):
         self.init_paths()
 
     def init_paths(self, **kwargs):
+        """Initializes all paths."""
         asset = os.path.abspath(os.path.join(".", PATH_ASSET))
         asset = kwargs.get("asset", asset)
         trash = os.path.abspath(os.path.join(".", PATH_TRASH))
@@ -79,44 +86,51 @@ class ORMFilesystemEvents(object):
         self.fs = Filesystem(asset=asset, trash=trash)
 
     def on_create(self, name):
+        """Triggers directory creation."""
         if isinstance(name, str):
             self.fs.create(name)
 
     def on_modify(self, src_name, dst_name):
+        """Triggers renaming."""
         if isinstance(src_name, str) and isinstance(dst_name, str):
-            self.fs.move(src_name, dst_name)
+            self.fs.rename(src_name, dst_name)
 
     def on_delete(self, name):
+        """Triggers remove."""
         if isinstance(name, str):
             self.fs.delete(name)
 
 
-orm = ORMFilesystemEvents()
+"""Main acces point to file system interface."""
+orm_fs_ext = OrmFileSystemExtension()
 
 
 @event.listens_for(Item, 'after_insert')
 def receive_after_insert(mapper, connection, target):
-    orm.on_create(target.code)
+    """Catches item creation and reroutes event."""
+    orm_fs_ext.on_create(target.code)
 
 
 @event.listens_for(Item.code, 'set')
 def receive_set(target, value, oldvalue, initiator):
-    orm.on_modify(oldvalue, value)
+    """Catches item modification and reroutes event."""
+    orm_fs_ext.on_modify(oldvalue, value)
 
 
 @event.listens_for(Item, 'after_delete')
 def receive_after_delete(mapper, connection, target):
-    orm.on_delete(target.code)
+    """Catches item delete and reroutes event."""
+    orm_fs_ext.on_delete(target.code)
 
 
 def main():
-    """Small test."""
+    """Small test for file system operations."""
     asset = os.path.abspath(os.path.join(".", PATH_ASSET))
     trash = os.path.abspath(os.path.join(".", PATH_TRASH))
     fs = Filesystem(asset=asset, trash=trash)
     fs.create("greate")
     fs.create("greate2")
-    fs.move("greate2", "greate3")
+    fs.rename("greate2", "greate3")
     fs.delete("greate")
     fs.clean()
 

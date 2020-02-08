@@ -10,7 +10,10 @@ from wtforms.widgets import HTMLString, html_params
 
 
 class SelectMany2SlaveAJAXWidget(object):
-    """Highly flexible widget for fields of type AJAXSelectManyField"""
+    """
+    Highly flexible widget for fields of type AJAXSelectManyField
+    """
+
     def __init__(self, endpoint_opt, endpoint_sel, master_id, style=None):
         self.endpoint_opt = endpoint_opt
         self.endpoint_sel = endpoint_sel
@@ -34,7 +37,10 @@ class SelectMany2SlaveAJAXWidget(object):
 
 
 class AJAXSelectManyField(SelectMultipleField):
-    """Field for SelectMany2SlaveAJAXWidget"""
+    """
+    Field for SelectMany2SlaveAJAXWidget
+    """
+
     def __init__(
         self,
         label=None,
@@ -84,6 +90,7 @@ class SimplePkFormView(BaseFormView):
     """
     Same as origin 'SimpleFormView' but provides the private key.
     """
+
     @expose("/form/<string:pk>", methods=["GET"])
     @expose("/form", methods=["GET"])
     @has_access

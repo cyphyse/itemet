@@ -6,7 +6,6 @@ from .... extension.form_extensions import (
     SelectMany2SlaveAJAXWidget
 )
 from .... models.data.item import Item
-from .... interface.filesystem import orm
 # external
 from pathvalidate import validate_filename
 from flask import redirect

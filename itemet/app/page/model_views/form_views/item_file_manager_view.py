@@ -2,7 +2,7 @@
 # internal
 from .... import app, db
 from .... extension.form_extensions import SimplePkFormView
-from .... interface.filesystem import orm
+from .... interface.filesystem import orm_fs_ext
 from .... models.forms.item_file_manager import ItemFileManager
 from .... models.data.item import Item
 # external
@@ -21,7 +21,7 @@ class ItemFileManagerView(SimplePkFormView):
         i = db.session.query(Item).filter_by(id=int(form.pk)).first()
         form.code.data = i.code
 
-        item_path = os.path.join(orm.fs.get_asset_path(form.code.data), '*')
+        item_path = os.path.join(orm_fs_ext.fs.get_asset_path(form.code.data), '*')
         item_files = glob.glob(item_path)
 
         form.file_links.choices = []
@@ -46,7 +46,7 @@ class ItemFileManagerView(SimplePkFormView):
         def delete(item_code, filename):
             nonlocal txt
             if len(filename) > 0 and not filename == "-":
-                filepath = orm.fs.get_asset_path(form.code.data, filename)
+                filepath = orm_fs_ext.fs.get_asset_path(form.code.data, filename)
                 os.remove(filepath)
                 txt += " | Deleted: " + filepath
 
@@ -54,7 +54,7 @@ class ItemFileManagerView(SimplePkFormView):
             nonlocal txt
             filename = secure_filename(file.filename)
             if len(filename) > 0:
-                filepath = orm.fs.get_asset_path(item_code, filename)
+                filepath = orm_fs_ext.fs.get_asset_path(item_code, filename)
                 file.save(filepath)
                 txt += " | Saved: " + filename
 

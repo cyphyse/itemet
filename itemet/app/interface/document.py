@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
-from . filesystem import orm
-from .. import app, db
+from . filesystem import orm_fs_ext
+from .. import db
 from .. models.data.item import Item
 from csvdoc.document_transform import DocumentTransform
 # external
@@ -38,7 +38,7 @@ class Document(object):
         }
 
         def get_cleaned_path(item_code, ext):
-            filepath = orm.fs.get_asset_path(item_code, item_code + ext)
+            filepath = orm_fs_ext.fs.get_asset_path(item_code, item_code + ext)
             try:
                 os.remove(filepath)
             except Exception as err:
