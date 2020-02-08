@@ -1,0 +1,15 @@
+{
+  "format": {
+    "datetime": {
+      "itemet.db": "%Y-%m-%dT%H:%M",
+      "doc": "%Y-%m-%d %H:%M"
+    }
+  },
+  "flask db": "sqlite",
+  "secret key": "secreterkey",
+  "path": {
+  	"flask db": "../demo/flask.db",
+  	"itemet db": "../demo",
+  	"itemet apps": "../demo/apps/*/app.py"
+  }
+}

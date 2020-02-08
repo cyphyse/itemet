@@ -1,5 +1,8 @@
+# -*- coding: <utf-8>
+# internal
 import os
 import json
+# external
 from flask.cli import with_appcontext
 from flask_appbuilder.security.manager import (
     AUTH_OID,
@@ -8,49 +11,72 @@ from flask_appbuilder.security.manager import (
     AUTH_LDAP,
     AUTH_OAUTH,
 )
+# logging
+import logging
+logger = logging.getLogger(__file__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Add custom configuration
-ITEMET = {
-    "format": {
-        "datetime": {
-            "itemet.db": "%Y-%m-%dT%H:%M",  # ISO 8601 only!
-            "doc": "%Y-%m-%d %H:%M"
-        }
-    },
-    "path": {
-        "flask db": "../demo",
-        "itemet db": "../demo",
-        "itemet apps": "../demo/apps/*/app.py"
-    }
-}
 
-def make_abs(path_dict):
+# ---------------------------------------------------
+# Helper functions for Itemet
+# ---------------------------------------------------
+
+def load_from_json(path):
+    """
+    Loads a base configuration from a json file.
+    """
+    with open(path) as cfg_file:
+        ITEMET = json.load(cfg_file)
+    return ITEMET
+
+
+def make_paths_absolute(path_dict, root_dir):
+    """
+    Returns a dict with absolute paths contructed to a given root dir.
+    """
     for key, path in path_dict.items():
         if isinstance(path, dict):
-            path_dict[key] = make_abs(path)
+            path_dict[key] = make_paths_absolute(path)
         else:
-            path_dict[key] = os.path.abspath(os.path.join(basedir, path))
+            path_dict[key] = os.path.abspath(os.path.join(root_dir, path))
     return path_dict
 
-ITEMET["path"] = make_abs(ITEMET["path"])
 
+# Determine path to Itemet configuration
+if 'ITEMET_CONFIG' in os.environ:
+    # take path from environment variable
+    itemet_conf_path = os.environ.get('ITEMET_CONFIG')
+else:
+    # take default configuration path
+    itemet_conf_path = os.path.join(basedir, "config.json")
+
+# Load base configuration for itemet from json-file and preprocess paths
+logger.info("Load config from: " + itemet_conf_path)
+ITEMET = load_from_json(itemet_conf_path)
+ITEMET["path"] = make_paths_absolute(
+    ITEMET["path"],
+    os.path.dirname(itemet_conf_path)
+)
+
+# ---------------------------------------------------
+# Apply itemet config to flask settings
+# ---------------------------------------------------
 # The SQLAlchemy connection string
-fdir = ITEMET["path"]["flask db"]
-SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(fdir, "flask.db")
-# SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
-# SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
+if ITEMET["flask db"] == "sqlite":
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + ITEMET["path"]["flask db"]
+else:
+    SQLALCHEMY_DATABASE_URI = ITEMET["flask db"]
 
 # Your App secret key
-SECRET_KEY = "secreterkey"
-
-# Flask-WTF flag for CSRF
-CSRF_ENABLED = True
+SECRET_KEY = ITEMET["secret key"]
 
 # ------------------------------
 # GLOBALS FOR APP Builder
 # ------------------------------
+# Flask-WTF flag for CSRF
+CSRF_ENABLED = True
+
 # Uncomment to setup Your App name
 APP_NAME = "Itemet"
 
