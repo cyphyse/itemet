@@ -5,7 +5,7 @@ from .... models.forms.edit_custom_data import ItemCustomEditModel
 from .... models.data.item import Item
 from .... extension.form_extensions import SimplePkFormView
 from .... interface.port import PandasPort
-from csvdoc.document_transform import DocumentTransform
+from csvdoc.document_compare import DocumentCompare
 # external
 from flask import redirect, flash
 from flask_babel import lazy_gettext as _
@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-transform = DocumentTransform()
+compare = DocumentCompare()
 
 
 class ItemCustomEditView(SimplePkFormView):
@@ -44,17 +44,16 @@ class ItemCustomEditView(SimplePkFormView):
         port = PandasPort()
         i = db.session.query(Item).filter_by(code=form.code.data).first()
         template = i.type.custom_template
-        if transform.valid_fields(template, form.custom.data):
-            i.custom = form.custom.data.strip()
-            # add data separator if its missing
-            if "\n---" not in template:
-                template += "\n---"
-            tmp = transform.to_dict(template)
-            data_in_template = len(tmp.keys()) > 1
-            tmp = i.custom.splitlines()
-            separator_is_missing = "---" not in tmp[1:]
-            if data_in_template and separator_is_missing:
-                i.custom += "\n---"
+        template = template.strip()
+        # ensure that compare take template data as yaml data
+        if not template.split("\n")[-1] == "---":
+            template += "\n---"
+        cr = compare.fields(template, form.custom.data)
+        if cr:
+            # take separator cleand data from validation because
+            # it will determine the correct data based on template
+            # even if a separator is missing
+            i.custom = cr.cmp
             # save changes and proceed
             db.session.commit()
             port.set_selected(i.code)
