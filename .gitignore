@@ -1,6 +1,6 @@
 /env/*
 /data/*
-/demo/select/*
+/demo/itemet.db/asset*
 /demo/appstatus.html
 
 flask.db

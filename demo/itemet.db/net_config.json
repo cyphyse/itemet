@@ -7,6 +7,7 @@
         },
         "need": {},
         "custom": {
+            "count": 0,
             "weight": 0
         }
     },
@@ -17,7 +18,9 @@
         },
         "need": {},
         "custom": {
-            "count": 0
+            "count": 0,
+            "weight": 0,
+            "shape": 0
         }
     },
     "Basket": {
