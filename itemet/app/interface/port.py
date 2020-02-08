@@ -43,6 +43,7 @@ def itelligent_search_add(T, param, search):
         return None
     return Q[0]
 
+
 _2db = itelligent_search_add  # it's just shorter
 
 
@@ -71,7 +72,7 @@ class PandasPort(object):
         for type_code, type_item in net_cfg.items():
             state_codes = type_item.get("state", {})
             need_codes = type_item.get("need", {})
-            custom = type_item.get("custom", "---\n---")
+            custom = type_item.get("custom", None)
             # find or add states
             states = []
             for state_code, state_color in state_codes.items():
@@ -85,7 +86,10 @@ class PandasPort(object):
                 n_obj = _2db(ItemType, n_param, {"type_code": need_code})
                 needs.append(n_obj)
             # dict to yaml
-            c_obj = yaml.dump(custom, default_flow_style=False, allow_unicode=True)
+            if custom is None:
+                c_obj = ""
+            else:
+                c_obj = yaml.dump(custom, default_flow_style=False, allow_unicode=True)
             # create type
             param = {
                 "type": type_code,
@@ -94,7 +98,6 @@ class PandasPort(object):
                 "custom_template": c_obj
             }
             _2db(ItemType, param, {"type_code": type_code})
-
 
     def create_net_config_from_db(self):
         # net config
@@ -118,9 +121,7 @@ class PandasPort(object):
                     if isinstance(doc, dict):
                         net_config[type.type_code].update({"custom": doc})
         filepath = app.config['ITEMET'].get("path").get("itemet net_config")
-
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
-
         with open(filepath, "w") as net_cfg_file:
             json.dump(net_config, net_cfg_file, indent=4)
 
