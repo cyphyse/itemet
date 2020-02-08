@@ -16,6 +16,7 @@ All documents of the same type have
 the same data points in the YAML front matter.
 The type also defines the possible connections to other documents.
 Further information can be found in './doc/'.
+For screenshots please navigate to './doc/assets/'.
 
 ## Typical Usage
 
@@ -24,11 +25,13 @@ Potential applications are:
 
 + Resource Planning
 + Requirements Management
++ Document Management System (very limited)
++ Office Automation (via additional apps through plugin interface)
 
-## Known Issues
+## Important Hints
 
-+ Change of datetime format leads to errors
-
+This program is not tested in relation to cyber security.
+So it's highly recommended to use it only in secure networks.
 
 ## Setup and Run
 
@@ -46,22 +49,18 @@ make run
 
 ## Configure
 
-Copy 'config.py' from 'app' directory to
+Copy 'config.json' from 'app' directory to
 the location where you want to store your data and make your changes.
-Then provide the path to this configuration as an environment variable.
+The paths in 'config.json' have to be relative to the location of the file.
+Finally you have to provide the path to your 'config.json'
+as an environment variable.
 
 ```
-export ITEMET_CONFIG=/path/to/config.py
+export ITEMET_CONFIG=/path/to/config.json
 make install
 ```
 
 ```
-export ITEMET_CONFIG=/path/to/config.py
+export ITEMET_CONFIG=/path/to/config.json
 make run
 ```
-
-Please ensure that the paths in your own configuration
-are relative to the execution path ('itemet')
-or even better, use absolute paths.
-
-Also make sure that you delete all your date before reinstallation.
