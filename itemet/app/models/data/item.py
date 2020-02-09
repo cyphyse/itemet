@@ -1,8 +1,11 @@
 # -*- coding: <utf-8>
 # internal
 from ... import app
+from ... interface.filesystem import orm_fs_ext
 from . format import fmt
 # external
+import os
+import re
 from flask_appbuilder import Model
 from flask_appbuilder.models.decorators import renders
 from sqlalchemy import(
@@ -10,6 +13,9 @@ from sqlalchemy import(
     Integer, Float, DateTime, String, Text
 )
 from sqlalchemy.orm import relationship
+
+
+MARKDOWN_IMAGE_REGEX_PATTERN = "([\!][[][^\]]*[\]][\(])([^)]{1,})([\)])"
 
 
 # table to provide a n..n relationship between items
@@ -60,7 +66,17 @@ class Item(Model):
     def custom_view(self):
         """Returns markdown rendered custom data"""
         data = self.custom if self.custom is not None else ""
-        return fmt.doc2html(data)
+        # add link to image
+        link = orm_fs_ext.get_link(self.code)
+        rep = {}
+        for m in re.finditer(MARKDOWN_IMAGE_REGEX_PATTERN, data):
+            origin = m.group(1) + m.group(2) + m.group(3)
+            new = m.group(1) + link + "/" + m.group(2) + m.group(3)
+            rep.update({origin: new})
+        for k, v in rep.items():
+            data = data.replace(k, v)
+        html = fmt.doc2html(data)
+        return html
 
     def from_dict(self, d):
         """Creates object from a dictionary"""

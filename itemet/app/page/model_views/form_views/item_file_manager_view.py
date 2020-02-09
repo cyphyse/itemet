@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from .... import app, db
+from .... import db
 from .... extension.form_extensions import SimplePkFormView
 from .... interface.filesystem import orm_fs_ext
 from .... models.forms.item_file_manager import ItemFileManager
@@ -20,21 +20,17 @@ class ItemFileManagerView(SimplePkFormView):
     def form_get(self, form):
         i = db.session.query(Item).filter_by(id=int(form.pk)).first()
         form.code.data = i.code
-
-        item_path = os.path.join(orm_fs_ext.fs.get_asset_path(form.code.data), '*')
+        item_path = orm_fs_ext.fs.get_asset_path(form.code.data, '*')
         item_files = glob.glob(item_path)
-
         form.file_links.choices = []
         for item_file in item_files:
-            servepath = app.config['ITEMET']['path']['fullserve']
-            filelink = item_file.replace(servepath, "/files")
             filename = os.path.basename(item_file)
+            filelink = orm_fs_ext.get_link(form.code.data, filename)
             a = "<a"
             a += " href=\"" + filelink + "\""
             a += " title=\"" + item_file + "\""
             a += ">" + filename + "</a>"
             form.file_links.choices.append((filename, a))
-
         form.files_to_delete.choices = [("-", "-")]
         for item_file in item_files:
             filename = os.path.basename(item_file)

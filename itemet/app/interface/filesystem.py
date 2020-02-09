@@ -1,10 +1,9 @@
 # -*- coding: <utf-8>
 # internal
-from .. models.data.item import Item
+from .. import app
 # external
 import os
 import shutil
-from sqlalchemy import event
 # logging
 import logging
 logger = logging.getLogger(__name__)
@@ -100,27 +99,15 @@ class OrmFileSystemExtension(object):
         if isinstance(name, str):
             self.fs.delete(name)
 
+    def get_link(self, item_code, *args):
+        filepath = self.fs.get_asset_path(item_code, *args)
+        servepath = app.config['ITEMET']['path']['fullserve']
+        link = filepath.replace(servepath, "/files")
+        return link
+
 
 """Main acces point to file system interface."""
 orm_fs_ext = OrmFileSystemExtension()
-
-
-@event.listens_for(Item, 'after_insert')
-def receive_after_insert(mapper, connection, target):
-    """Catches item creation and reroutes event."""
-    orm_fs_ext.on_create(target.code)
-
-
-@event.listens_for(Item.code, 'set')
-def receive_set(target, value, oldvalue, initiator):
-    """Catches item modification and reroutes event."""
-    orm_fs_ext.on_modify(oldvalue, value)
-
-
-@event.listens_for(Item, 'after_delete')
-def receive_after_delete(mapper, connection, target):
-    """Catches item delete and reroutes event."""
-    orm_fs_ext.on_delete(target.code)
 
 
 def main():
