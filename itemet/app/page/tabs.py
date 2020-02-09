@@ -1,11 +1,11 @@
 # -*- coding: <utf-8>
 # internal
 from .. import appbuilder
-from . model_views.data_views.item_state_view import ItemStateView
-from . model_views.data_views.item_type_view import ItemTypeView
-from . model_views.data_views.item_view import ItemView, ItemMasterView
-from . model_views.form_views.edit_custom_data_view import ItemCustomEditView
-from . model_views.form_views.item_file_manager_view import ItemFileManagerView
+from .. entity.view.objects.item_state_view import ItemStateView
+from .. entity.view.objects.item_type_view import ItemTypeView
+from .. entity.view.objects.item_view import ItemView, ItemMasterView
+from .. entity.view.forms.edit_custom_data_view import ItemCustomEditView
+from .. entity.view.forms.item_file_manager_view import ItemFileManagerView
 
 # external
 from flask_babel import lazy_gettext as _

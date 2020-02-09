@@ -1,8 +1,8 @@
 # -*- coding: <utf-8>
 # internal
-from . filesystem import orm_fs_ext
-from .. import db
-from .. models.data.item import Item
+from . directories import orm_fs_ext
+from ... import db
+from ... entity.model.objects.item_model import Item
 from csvdoc.document_transform import DocumentTransform
 # external
 import os

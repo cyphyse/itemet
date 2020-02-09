@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
 from .. import appbuilder, db
-from .. interface.endpoints import ApiEndpoints
+from .. interface.api.endpoints import ApiEndpoints
 from . tabs import add_data_tab, add_edit_tab
 # external
 from flask import render_template

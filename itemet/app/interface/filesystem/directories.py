@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from .. import app
+from ... import app
 # external
 import os
 import shutil
@@ -106,7 +106,7 @@ class OrmFileSystemExtension(object):
         return link
 
 
-"""Main acces point to file system interface."""
+"""Main access point to file system interface."""
 orm_fs_ext = OrmFileSystemExtension()
 
 

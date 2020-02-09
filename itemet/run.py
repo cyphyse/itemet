@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
 from app import app
-from app.interface.filesystem import orm_fs_ext
+from app.interface.filesystem.directories import orm_fs_ext
 # external
 import os
 from flask_autoindex import AutoIndex

@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from .... models.data.item_state import ItemState
+from ... model.objects.item_state_model import ItemState
 # external
 from flask_babel import lazy_gettext as _
 from flask_appbuilder.models.sqla.interface import SQLAInterface

@@ -1,10 +1,10 @@
 # -*- coding: <utf-8>
 # internal
 from .... import db
-from .... models.forms.edit_custom_data import ItemCustomEditModel
-from .... models.data.item import Item
+from .... interface.filesystem.database import PandasPort
 from .... extension.form_extensions import SimplePkFormView
-from .... interface.port import PandasPort
+from ... model.forms.edit_custom_data_model import ItemCustomEditModel
+from ... model.objects.item_model import Item
 from csvdoc.document_compare import DocumentCompare
 # external
 from flask import redirect, flash

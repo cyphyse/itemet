@@ -2,9 +2,9 @@
 # internal
 from .... import db
 from .... extension.form_extensions import SimplePkFormView
-from .... interface.filesystem import orm_fs_ext
-from .... models.forms.item_file_manager import ItemFileManager
-from .... models.data.item import Item
+from .... interface.filesystem.directories import orm_fs_ext
+from ... model.forms.item_file_manager_model import ItemFileManager
+from ... model.objects.item_model import Item
 # external
 import os
 import glob

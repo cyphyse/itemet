@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from .. data.format import fmt
+from .. format import fmt
 # external
 from markupsafe import Markup
 from flask_babel import lazy_gettext as _

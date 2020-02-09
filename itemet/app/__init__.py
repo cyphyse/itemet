@@ -51,7 +51,7 @@ appbuilder = AppBuilder(
 )
 
 # Load plugins
-from app.interface.trigger import plugintrigger
+from app.interface.plugins.trigger import plugintrigger
 cfg = app.config
 icfg = app.config['ITEMET']
 plugintrigger.init(

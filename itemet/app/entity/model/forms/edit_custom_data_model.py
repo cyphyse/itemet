@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
-from ... import db
-from .. data.item import Item
+from .... import db
+from .. objects.item_model import Item
 # external
 from flask_babel import lazy_gettext as _
 from flask_appbuilder.forms import DynamicForm

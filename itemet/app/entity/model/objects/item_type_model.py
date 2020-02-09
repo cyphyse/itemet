@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from . format import fmt
+from .. format import fmt
 # external
 from flask_appbuilder import Model
 from flask_appbuilder.models.decorators import renders

@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
-from . filesystem import orm_fs_ext
-from .. models.data.item import Item
+from . filesystem.directories import orm_fs_ext
+from .. entity.model.objects.item_model import Item
 # external
 from sqlalchemy import event
 

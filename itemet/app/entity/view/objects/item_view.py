@@ -5,7 +5,7 @@ from .... extension.form_extensions import (
     AJAXSelectManyField,
     SelectMany2SlaveAJAXWidget
 )
-from .... models.data.item import Item
+from ... model.objects.item_model import Item
 # external
 from pathvalidate import validate_filename
 from flask import redirect

@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # intern
-from .. import app
+from ... import app
 from . triggerable import EXIT_CODE
 # external
 import sys

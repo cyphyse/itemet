@@ -1,9 +1,9 @@
 # -*- coding: <utf-8>
 # internal
-from .. import db
-from .. models.data.item import Item
-from .. models.data.item_type import ItemType
-from .. interface.port import PandasPort
+from ... import db
+from ... entity.model.objects.item_model import Item
+from ... entity.model.objects.item_type_model import ItemType
+from ... interface.filesystem.database import PandasPort
 # external
 from flask import redirect, jsonify
 from flask_appbuilder import BaseView, expose, has_access
