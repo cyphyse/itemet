@@ -3,6 +3,7 @@
 from ... import db
 from ... entity.model.objects.item_model import Item
 from ... entity.model.objects.item_type_model import ItemType
+from ... entity.operation.functions import clear_db
 from ... interface.filesystem.manager import fs_mngr
 # external
 from flask import redirect, jsonify
@@ -89,6 +90,7 @@ class ApiEndpoints(BaseView):
     @has_access
     def importdata(self, path):
         """Triggers the data import"""
+        clear_db()
         fs_mngr.import_db_from_fs()
         return redirect("/")
 

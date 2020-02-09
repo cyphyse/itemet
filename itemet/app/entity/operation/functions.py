@@ -1,6 +1,9 @@
 # -*- coding: <utf-8>
 # internal
-from .... import db
+from ... import db
+from .. model.objects.item_state_model import ItemState
+from .. model.objects.item_type_model import ItemType
+from .. model.objects.item_model import Item
 # external
 # logging
 import logging
@@ -31,3 +34,18 @@ def itelligent_search_add(T, param, search):
 
 
 _2db = itelligent_search_add  # it's just shorter
+
+
+def clear_db():
+    # delete all connections first
+    for item in db.session.query(Item).all():
+        item.needs = []
+    for type in db.session.query(ItemType).all():
+        type.type_needs = []
+        type.type_states = []
+    db.session.commit()
+    # then delete actual items
+    db.session.query(Item).delete()
+    db.session.query(ItemType).delete()
+    db.session.query(ItemState).delete()
+    db.session.commit()

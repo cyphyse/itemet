@@ -4,7 +4,7 @@ from .... import app, db
 from .... entity.model.objects.item_state_model import ItemState
 from .... entity.model.objects.item_type_model import ItemType
 from .... entity.model.objects.item_model import Item
-from . helper import get_T, _2db
+from .... entity.operation.functions import get_T, _2db
 # library
 from csvdoc.table_collection import TableCollection
 # external
