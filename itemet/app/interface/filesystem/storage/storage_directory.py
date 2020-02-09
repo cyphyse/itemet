@@ -1,6 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from ... import app
+from .... import app
 # external
 import os
 import shutil
@@ -13,9 +13,9 @@ PATH_ASSET = "asset"
 PATH_TRASH = "trash"
 
 
-class Filesystem(object):
+class FilesystemOperations(object):
     """
-    Interface to filesystem.
+    Class to provide basic filesystem operations.
     """
 
     def __init__(self, **kwargs):
@@ -68,53 +68,59 @@ class Filesystem(object):
         shutil.rmtree(self.trash)
 
 
-class OrmFileSystemExtension(object):
+class OrmFilesystemEvents(FilesystemOperations):
     """
-    Handler for ORM events.
+    Class to handl ORM events.
     """
 
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.init_paths()
 
     def init_paths(self, **kwargs):
         """Initializes all paths."""
         asset = os.path.abspath(os.path.join(".", PATH_ASSET))
-        asset = kwargs.get("asset", asset)
+        self.asset = kwargs.get("asset", asset)
         trash = os.path.abspath(os.path.join(".", PATH_TRASH))
-        trash = kwargs.get("trash", trash)
-        self.fs = Filesystem(asset=asset, trash=trash)
+        self.trash = kwargs.get("trash", trash)
 
     def on_create(self, name):
         """Triggers directory creation."""
         if isinstance(name, str):
-            self.fs.create(name)
+            self.create(name)
 
     def on_modify(self, src_name, dst_name):
         """Triggers renaming."""
         if isinstance(src_name, str) and isinstance(dst_name, str):
-            self.fs.rename(src_name, dst_name)
+            self.rename(src_name, dst_name)
 
     def on_delete(self, name):
         """Triggers remove."""
         if isinstance(name, str):
-            self.fs.delete(name)
+            self.delete(name)
 
     def get_link(self, item_code, *args):
-        filepath = self.fs.get_asset_path(item_code, *args)
-        servepath = app.config['ITEMET']['path']['fullserve']
-        link = filepath.replace(servepath, "/files")
+        filepath = self.get_asset_path(item_code, *args)
+        p = app.config['ITEMET'].get("path").get("itemet db")
+        link = filepath.replace(p, "/files")
         return link
 
 
-"""Main access point to file system interface."""
-orm_fs_ext = OrmFileSystemExtension()
+
+class StorageDirectory(OrmFilesystemEvents):
+    """
+    Top class for common naming.
+    """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 
 
 def main():
     """Small test for file system operations."""
     asset = os.path.abspath(os.path.join(".", PATH_ASSET))
     trash = os.path.abspath(os.path.join(".", PATH_TRASH))
-    fs = Filesystem(asset=asset, trash=trash)
+    fs = FilesystemOperations(asset=asset, trash=trash)
     fs.create("greate")
     fs.create("greate2")
     fs.rename("greate2", "greate3")

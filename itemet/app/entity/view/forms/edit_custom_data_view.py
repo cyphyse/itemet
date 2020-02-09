@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
 from .... import db
-from .... interface.filesystem.database import PandasPort
+from .... interface.filesystem.manager import fs_mngr
 from .... extension.form_extensions import SimplePkFormView
 from ... model.forms.edit_custom_data_model import ItemCustomEditModel
 from ... model.objects.item_model import Item
@@ -41,7 +41,6 @@ class ItemCustomEditView(SimplePkFormView):
             form.custom.data = i.custom
 
     def form_post(self, form):
-        port = PandasPort()
         i = db.session.query(Item).filter_by(code=form.code.data).first()
         template = i.type.custom_template
         template = template.strip()
@@ -56,7 +55,7 @@ class ItemCustomEditView(SimplePkFormView):
             i.custom = cr.cmp
             # save changes and proceed
             db.session.commit()
-            port.set_selected(i.code)
+            fs_mngr.create_item_document(i.code)
             flash(self.message_info, "info")
         else:
             flash(self.message_warn, "warning")

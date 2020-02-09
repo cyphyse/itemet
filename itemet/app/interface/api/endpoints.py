@@ -3,7 +3,7 @@
 from ... import db
 from ... entity.model.objects.item_model import Item
 from ... entity.model.objects.item_type_model import ItemType
-from ... interface.filesystem.database import PandasPort
+from ... interface.filesystem.manager import fs_mngr
 # external
 from flask import redirect, jsonify
 from flask_appbuilder import BaseView, expose, has_access
@@ -89,14 +89,12 @@ class ApiEndpoints(BaseView):
     @has_access
     def importdata(self, path):
         """Triggers the data import"""
-        port = PandasPort()
-        port.import_table()
+        fs_mngr.import_db_from_fs()
         return redirect("/")
 
     @expose('/exportdata/<string:path>')
     @has_access
     def exportdata(self, path):
         """Triggers the data export"""
-        port = PandasPort()
-        port.export_table()
+        fs_mngr.export_db_to_fs()
         return redirect("/")

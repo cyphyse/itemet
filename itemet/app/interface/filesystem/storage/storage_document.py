@@ -1,8 +1,6 @@
 # -*- coding: <utf-8>
 # internal
-from . directories import orm_fs_ext
-from ... import db
-from ... entity.model.objects.item_model import Item
+from .... import db
 from csvdoc.document_transform import DocumentTransform
 # external
 import os
@@ -11,17 +9,18 @@ import json
 transform = DocumentTransform()
 
 
-class Document(object):
+class StorageItemDocument(object):
     """
     This class provides functions to create
     documents in markdown and json format from a db entry.
     """
 
-    def __init__(self):
+    def __init__(self, fs):
         self.name = "Document"
+        self.fs = fs
 
-    def make(self, item_code):
-        item = db.session.query(Item).filter_by(code=item_code).first()
+    def make(self, item):
+        item_code = item.code
         # get all data
         item_base = item.as_doc_dict()
         # extract custom yamlmd
@@ -38,7 +37,7 @@ class Document(object):
         }
 
         def get_cleaned_path(item_code, ext):
-            filepath = orm_fs_ext.fs.get_asset_path(item_code, item_code + ext)
+            filepath = self.fs.get_asset_path(item_code, item_code + ext)
             try:
                 os.remove(filepath)
             except Exception as err:

@@ -1,7 +1,7 @@
 # -*- coding: <utf-8>
 # internal
 from .... import app
-from .... interface.filesystem.directories import orm_fs_ext
+from .... interface.filesystem.storage.storage import fs_storage
 from .. format import fmt
 # external
 import os
@@ -67,7 +67,7 @@ class Item(Model):
         """Returns markdown rendered custom data"""
         data = self.custom if self.custom is not None else ""
         # add link to image
-        link = orm_fs_ext.get_link(self.code)
+        link = fs_storage.dir.get_link(self.code)
         rep = {}
         for m in re.finditer(MARKDOWN_IMAGE_REGEX_PATTERN, data):
             origin = m.group(1) + m.group(2) + m.group(3)
